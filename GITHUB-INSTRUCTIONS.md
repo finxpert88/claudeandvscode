@@ -150,6 +150,9 @@ git commit -m "First version of ClaudeAndVSCode.com"
 
 ### 3.4 Create the repo on GitHub and push
 
+> ✅ **Already done** for this project. Your site lives at
+> **https://github.com/finxpert88/claudeandvscode** (private). From now on, just use [Part 4](#4-everyday-updates-the-part-youll-use-most).
+
 Choose **one** of these two ways.
 
 #### Option A: GitHub CLI (fastest, one command)
