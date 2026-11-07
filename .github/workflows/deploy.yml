@@ -33,9 +33,15 @@ jobs:
         env:
           BASE_PATH: /claudeandvscode/
 
-      # GitHub Pages shows 404.html for unknown paths. Copying the app there
-      # lets /about and /contact work when refreshed or opened directly.
-      - run: cp dist/index.html dist/404.html
+      # Give each page its own copy of the app so /about and /contact load
+      # properly (status 200) when refreshed or opened directly. 404.html
+      # catches any other address and shows the home page.
+      - run: |
+          for page in about contact; do
+            mkdir -p dist/$page
+            cp dist/index.html dist/$page/index.html
+          done
+          cp dist/index.html dist/404.html
 
       - uses: actions/configure-pages@v5
 

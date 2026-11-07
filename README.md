@@ -9,6 +9,10 @@
 </p>
 
 <p align="center">
+  <a href="https://finxpert88.github.io/claudeandvscode/"><strong>🌐 View the live site →</strong></a>
+</p>
+
+<p align="center">
   <img alt="React" src="https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=white" />
   <img alt="Vite" src="https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white" />
   <img alt="Framer Motion" src="https://img.shields.io/badge/Framer%20Motion-animations-e8552f" />
@@ -131,9 +135,13 @@ git push
 
 ## Deployment
 
-The site builds to static files (`npm run build` → `dist/`), so it can be hosted for free on services like
-Vercel, Netlify or Cloudflare Pages. See
-[section 7 of GITHUB-INSTRUCTIONS.md](GITHUB-INSTRUCTIONS.md#7-optional-making-the-site-live-on-the-internet).
+The site is hosted on **GitHub Pages** at **https://finxpert88.github.io/claudeandvscode/**.
+
+Every push to `main` triggers [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml), which builds the site
+and publishes it automatically. Check progress in the repo's **Actions** tab.
+
+To connect the custom domain (claudeandvscode.com), see
+[section 7.2 of GITHUB-INSTRUCTIONS.md](GITHUB-INSTRUCTIONS.md#72-connecting-your-own-domain-claudeandvscodecom).
 
 ## Contact
 

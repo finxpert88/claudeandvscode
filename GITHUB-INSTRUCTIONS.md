@@ -13,7 +13,7 @@ Keep this file. You'll come back to Part 4 ("Everyday updates") the most.
 4. [Everyday updates (the part you'll use most)](#4-everyday-updates-the-part-youll-use-most)
 5. [Getting the site onto another computer](#5-getting-the-site-onto-another-computer)
 6. [Doing it from inside VS Code (no typing)](#6-doing-it-from-inside-vs-code-no-typing)
-7. [Optional: making the site live on the internet](#7-optional-making-the-site-live-on-the-internet)
+7. [The live site (GitHub Pages)](#7-the-live-site-github-pages)
 8. [Troubleshooting](#8-troubleshooting)
 9. [Cheat sheet](#9-cheat-sheet)
 
@@ -151,7 +151,7 @@ git commit -m "First version of ClaudeAndVSCode.com"
 ### 3.4 Create the repo on GitHub and push
 
 > ✅ **Already done** for this project. Your site lives at
-> **https://github.com/finxpert88/claudeandvscode** (private). From now on, just use [Part 4](#4-everyday-updates-the-part-youll-use-most).
+> **https://github.com/finxpert88/claudeandvscode** (public, so it can use GitHub Pages). From now on, just use [Part 4](#4-everyday-updates-the-part-youll-use-most).
 
 Choose **one** of these two ways.
 
@@ -280,23 +280,87 @@ You can also just ask Claude in VS Code: *"commit and push my changes"*.
 
 ---
 
-## 7. Optional: making the site live on the internet
+## 7. The live site (GitHub Pages)
 
-GitHub **stores** your code. To let people **visit** the site, connect the repo to a hosting service. These are
-free for small sites and redeploy automatically every time you `git push`:
+> ✅ **Your site is live at https://finxpert88.github.io/claudeandvscode/**
+> (hosted free on GitHub Pages; the repo was made **public** for this, as the free plan requires).
 
-| Service | Steps |
-|---|---|
-| **Vercel** (recommended) | Sign in at vercel.com with GitHub → **Add New Project** → pick `claudeandvscode` → **Deploy**. Vercel detects Vite automatically. |
-| **Netlify** | Sign in at netlify.com with GitHub → **Add new site → Import from Git** → pick the repo. Build command `npm run build`, publish folder `dist`. |
-| **Cloudflare Pages** | dash.cloudflare.com → **Workers & Pages → Create → Pages → Connect to Git**. Framework preset: **Vite**. |
+### 7.1 How it updates
 
-**Using your own domain (claudeandvscode.com):** each service has a **Domains** setting. Add your domain there,
-then copy the DNS records it shows into your domain registrar's DNS settings.
+You don't need to do anything special. **Every `git push` to `main` republishes the site automatically**, usually
+within a minute or two.
 
-> ⚠️ **Page refresh shows 404 on /about or /contact?** That's because the site is a "single-page app". Vercel and
-> Cloudflare usually handle this automatically. On Netlify, add a file `public/_redirects` containing
-> `/*  /index.html  200`, then commit and push. Or ask Claude to set it up for your chosen host.
+Behind the scenes, the file [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) tells GitHub to:
+
+1. Install the packages (`npm ci`)
+2. Build the site (`npm run build`)
+3. Publish the result to GitHub Pages
+
+**To check on a deploy:** open your repo on GitHub → **Actions** tab. A green ✓ means it's live; a red ✗ means
+something failed (click it to see why), and the previous version stays online.
+
+From the terminal:
+
+```powershell
+gh run list --limit 5     # recent deploys
+gh run watch              # watch the current one live
+```
+
+**To redeploy without changing anything:** Actions tab → **Deploy to GitHub Pages** → **Run workflow**.
+
+### 7.2 Connecting your own domain (claudeandvscode.com)
+
+As of 7 Nov 2026, **claudeandvscode.com was not yet registered**, so it was available to buy.
+
+**Step 1: Buy the domain.** Use any registrar, such as Cloudflare, Namecheap, Porkbun or GoDaddy. Expect about
+US$10–15/year.
+
+**Step 2: Point the domain at GitHub.** In your registrar's **DNS settings**, add these records:
+
+| Type | Name / Host | Value |
+|---|---|---|
+| `A` | `@` | `185.199.108.153` |
+| `A` | `@` | `185.199.109.153` |
+| `A` | `@` | `185.199.110.153` |
+| `A` | `@` | `185.199.111.153` |
+| `CNAME` | `www` | `finxpert88.github.io` |
+
+Delete any existing "parking" `A` or `CNAME` records for `@` or `www` that the registrar added.
+
+**Step 3: Tell GitHub about the domain.**
+
+1. Repo on GitHub → **Settings** → **Pages**.
+2. Under **Custom domain**, type `claudeandvscode.com` and click **Save**.
+3. Wait for the DNS check to go green. This can take from a few minutes to a few hours.
+4. Tick **Enforce HTTPS** (it may take a little while to become available).
+
+**Step 4: Switch the site to the root address.** Open [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml),
+change this line:
+
+```yaml
+          BASE_PATH: /claudeandvscode/
+```
+
+to:
+
+```yaml
+          BASE_PATH: /
+```
+
+Then commit and push. (The `/claudeandvscode/` part is only needed for the `github.io` address.)
+
+**Step 5 (recommended): Verify the domain** so nobody else can use it on GitHub: your profile picture →
+**Settings** → **Pages** → **Add a domain**, and follow the instructions.
+
+> 💡 Or just ask Claude: *"I've bought claudeandvscode.com, connect it."*
+
+### 7.3 Good to know
+
+- **Public repo:** anyone can see the code and the commit history, including the name and email shown on each
+  commit. Never commit passwords or API keys. To keep your email private going forward, see the tip in 2.2.
+- **Making it private again** turns the site off, unless you upgrade to GitHub Pro.
+- **Page addresses:** `/about` and `/contact` work when opened directly or refreshed. The deploy step creates a copy
+  of the app for each. If you add a new page, add its name to the `for page in about contact` line in `deploy.yml`.
 
 ---
 
