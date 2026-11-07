@@ -18,7 +18,7 @@ export default function VideoBackground() {
   return (
     <div className="video-bg" aria-hidden="true">
       <video ref={ref} autoPlay muted loop playsInline preload="auto">
-        <source src="/videos/warm-abstract.mp4" type="video/mp4" />
+        <source src={`${import.meta.env.BASE_URL}videos/warm-abstract.mp4`} type="video/mp4" />
       </video>
       <div className="video-overlay" />
     </div>
